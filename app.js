@@ -21,6 +21,11 @@ app.use('/ask', askRouter);
 app.use('/answer', answerRouter);
 app.use('/question', questionRouter);
 
+app.post('/muarausach', (req, res)=>{
+    if(req.body.tien < 100) res.send("Deo du tien")
+    else res.send("Rau sach cua m day!!");
+});
+
 app.use(express.static('public'));
 
 mongoose.connect('mongodb://localhost/quyetdedb', (err)=>{
