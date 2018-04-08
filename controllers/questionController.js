@@ -51,19 +51,20 @@ let findRandom = (callback) => {
 }
 
 let updateQuestion = (id, answer, callback) => {
-    let updateQuestion = async (id, answer, callback) => {
-        try {
-            let doc = await QuestionModel.findById(id)
+    try {
+        QuestionModel.findById(id, (err, doc) => {
+            if (err) console.log(err);
             if (answer == 'yes') {
                 doc.yes += 1;
             } else {
                 doc.no += 1;
             }
-            doc = await doc.save()
-            callback(null, doc)
-        } catch (err) {
-            callback(err, null)
-        }
+            doc.save((err) => {
+                callback(err, doc);
+            });
+        });
+    } catch (ex) {
+        console.log("Exception: " + ex)
     }
 }
 
