@@ -51,21 +51,21 @@ let findRandom = (callback) => {
 }
 
 let updateQuestion = (id, answer, callback) => {
-    try {
-        QuestionModel.findById(id, (err, doc) => {
-            if (err) console.log(err);
+    QuestionModel.findById(id)
+        .then(doc => {
             if (answer == 'yes') {
                 doc.yes += 1;
             } else {
                 doc.no += 1;
             }
-            doc.save((err) => {
-                callback(err, doc);
-            });
-        });
-    } catch (ex) {
-        console.log("Exception: " + ex)
-    }
+            return doc.save()
+        })
+        .then(doc => {
+            callback(null, doc)
+        })
+        .catch(err => {
+            callback(err, null)
+        })
 }
 
 module.exports = {
